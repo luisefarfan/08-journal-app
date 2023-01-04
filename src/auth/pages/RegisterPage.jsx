@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { Grid, Typography, TextField, Button, Link } from '@mui/material'
+import { Grid, Typography, TextField, Button, Link, Alert } from '@mui/material'
 import { AuthLayout } from '../layout/AuthLayout'
 import { useForm } from '../../hooks'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { startCreatingUserWithEmailAndPassword } from '../../store/auth/thunks'
+import { useMemo } from 'react'
 
 const formData = {
   displayName: '',
@@ -21,6 +22,9 @@ const formValidations = {
 export const RegisterPage = () => {
   const dispatch = useDispatch()
   const [formSubmitted, setFormSubmitted] = useState(false)
+
+  const { status, errorMessage } = useSelector(state => state)
+  const isCheckingAuthentication = useMemo(() => status === 'checking', [status])
 
   const {
     displayName,
@@ -87,8 +91,11 @@ export const RegisterPage = () => {
           </Grid>
 
           <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
+            <Grid item xs={12} display={!!errorMessage ? '' : 'none'}>
+              <Alert severity='error'>{errorMessage}</Alert>
+            </Grid>
             <Grid item xs={12}>
-              <Button type='submit' variant='contained' fullWidth>
+              <Button disabled={isCheckingAuthentication} type='submit' variant='contained' fullWidth>
                 Crear cuenta
               </Button>
             </Grid>
