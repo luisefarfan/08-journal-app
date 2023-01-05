@@ -77,3 +77,12 @@ export const registerUserWithEmailAndPassword = async ({ email, password, displa
     return { ok: false, errorMessage: e.message }
   }
 }
+
+export const logoutFromFirebase = async () => {
+  try {
+    return await firebaseAuth.signOut()
+  }
+  catch (e) {
+    return { ok: false, errorMessage: e.message }
+  }
+}
