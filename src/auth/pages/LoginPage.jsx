@@ -7,6 +7,7 @@ import { AuthLayout } from '../layout/AuthLayout'
 import { useForm } from '../../hooks'
 import { emailAndPasswordLogin, googleSignIn } from '../../store/auth/thunks'
 import { useMemo } from 'react'
+import { CHECKING_STATE } from '../../store/auth/constants'
 
 export const LoginPage = () => {
   const { status, errorMessage } = useSelector((state) => state)
@@ -17,7 +18,7 @@ export const LoginPage = () => {
     password: ''
   })
 
-  const isAuthenticating = useMemo(() => status === 'checking', [status])
+  const isAuthenticating = useMemo(() => status === CHECKING_STATE, [status])
 
   const handleSubmit = (e) => {
     e.preventDefault()

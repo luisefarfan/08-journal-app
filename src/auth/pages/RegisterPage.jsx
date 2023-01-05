@@ -6,6 +6,7 @@ import { useForm } from '../../hooks'
 import { useDispatch, useSelector } from 'react-redux'
 import { startCreatingUserWithEmailAndPassword } from '../../store/auth/thunks'
 import { useMemo } from 'react'
+import { CHECKING_STATE } from '../../store/auth/constants'
 
 const formData = {
   displayName: '',
@@ -24,7 +25,7 @@ export const RegisterPage = () => {
   const [formSubmitted, setFormSubmitted] = useState(false)
 
   const { status, errorMessage } = useSelector(state => state)
-  const isCheckingAuthentication = useMemo(() => status === 'checking', [status])
+  const isCheckingAuthentication = useMemo(() => status === CHECKING_STATE, [status])
 
   const {
     displayName,
