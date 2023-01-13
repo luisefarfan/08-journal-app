@@ -9,14 +9,16 @@ import { emailAndPasswordLogin, googleSignIn } from '../../store/auth/thunks'
 import { useMemo } from 'react'
 import { CHECKING_STATE } from '../../store/auth/constants'
 
+const formData = {
+  email: '',
+  password: ''
+}
+
 export const LoginPage = () => {
   const { status, errorMessage } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
 
-  const { email, password, handleChange } = useForm({
-    email: '',
-    password: ''
-  })
+  const { email, password, handleChange } = useForm(formData)
 
   const isAuthenticating = useMemo(() => status === CHECKING_STATE, [status])
 

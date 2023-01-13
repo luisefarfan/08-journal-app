@@ -9,6 +9,11 @@ export const useForm = (initialForm = {}, formValidations = {}) => {
     createValidators()
   }, [formState])
 
+  // Con esto nos aseguramos que se rerenderice el componente padre
+  useEffect(() => {
+    setFormState(initialForm)
+  }, [initialForm])
+
   const formIsValid = useMemo(() => {
     for (const formValue of Object.keys(formValidation)) {
       if (formValidation[formValue] !== null) return false

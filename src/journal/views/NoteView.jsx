@@ -2,8 +2,23 @@ import React from 'react'
 import { Grid, Typography, Button, TextField } from '@mui/material'
 import { SaveOutlined } from '@mui/icons-material'
 import { ImageGallery } from '../components'
+import { useSelector } from 'react-redux'
+import { useForm } from '../../hooks/useForm'
+import { useMemo } from 'react'
 
 export const NoteView = () => {
+  const { activeNote } = useSelector((state) => state.journal)
+
+  // Solo asi no se va a actualizar la view porque el componente no se vuelve a crear. Hay que
+  // decirle al useForm que si el initialForm cambia, se vuelva a renderizar
+  const { title, body, date, handleChange } = useForm(activeNote)
+
+  const dateString = useMemo(() => {
+    const newDate = new Date(date)
+
+    return `${newDate.getDate()}/${newDate.getMonth() + 1}/${newDate.getFullYear()}`
+  }, [date])
+
   return (
     <Grid
       container
@@ -14,7 +29,7 @@ export const NoteView = () => {
       className="animate__animated animate__fadeIn animate__faster"
     >
       <Grid item>
-        <Typography fontSize={39} fontWeight="light">28 de agosto, 2023</Typography>
+        <Typography fontSize={39} fontWeight="light">{dateString}</Typography>
       </Grid>
       <Grid item>
         <Button color="primary" sx={{ p: 2 }}>
@@ -30,6 +45,9 @@ export const NoteView = () => {
           fullWidth
           placeholder="Ingrese un título"
           label="Titulo"
+          value={title}
+          onChange={handleChange}
+          name='title'
           sx={{ border: 'none', mb: 1 }}
         />
         <TextField
@@ -40,6 +58,9 @@ export const NoteView = () => {
           placeholder="Que sucedio en el dia de hoy?"
           label="Descripcion"
           minRows={5}
+          value={body}
+          onChange={handleChange}
+          name='body'
           sx={{ border: 'none', mb: 1 }}
         />
       </Grid>
