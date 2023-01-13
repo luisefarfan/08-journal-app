@@ -10,7 +10,7 @@ import { useMemo } from 'react'
 import { CHECKING_STATE } from '../../store/auth/constants'
 
 export const LoginPage = () => {
-  const { status, errorMessage } = useSelector((state) => state)
+  const { status, errorMessage } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
 
   const { email, password, handleChange } = useForm({

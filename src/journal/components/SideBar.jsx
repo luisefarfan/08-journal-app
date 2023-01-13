@@ -4,7 +4,7 @@ import { TurnedInNot } from '@mui/icons-material'
 import { useSelector } from 'react-redux'
 
 export const SideBar = ({ drawerWidth }) => {
-  const { displayName } = useSelector((state) => state)
+  const { displayName } = useSelector((state) => state.auth)
 
   return (
     <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}>
