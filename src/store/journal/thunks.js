@@ -1,7 +1,8 @@
 import { collection, doc, setDoc } from "firebase/firestore/lite"
 import { firebaseDB } from "../../firebase/config"
+import { fileUpload } from "../../helpers/fileUpload"
 import { loadNotes } from "../../helpers/loadNotes"
-import { addNewEmptyNote, setActiveNote, savingNewNote, setNotes, setSaving, updateNote } from "./journalSlice"
+import { addNewEmptyNote, setActiveNote, savingNewNote, setNotes, setSaving, updateNote, setPhotosToActiveNote } from "./journalSlice"
 
 export const startNewNote = () => {
   return async (dispatch, getState) => {
@@ -12,7 +13,8 @@ export const startNewNote = () => {
     const newNote = {
       title: '',
       body: '',
-      date: new Date().getTime()
+      date: new Date().getTime(),
+      imageUrls: []
     }
 
     // Se le envia la configuracion de la base de datos y la coleccion donde se va a crear el documento
@@ -60,6 +62,21 @@ export const startSavingNote = () => {
     await setDoc(docRef, noteToFirestore, { merge: true })
 
     dispatch(updateNote(activeNote))
+  }
+}
 
+export const startUploadingFiles = (files = []) => {
+  return async (dispatch, getState) => {
+    dispatch(setSaving())
+
+    const fileUploadPromises = []
+
+    for (const file of files) {
+      fileUploadPromises.push(fileUpload(file))
+    }
+
+    const photosUrls = await Promise.all(fileUploadPromises)
+
+    dispatch(setPhotosToActiveNote(photosUrls))
   }
 }
