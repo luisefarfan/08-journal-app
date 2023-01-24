@@ -56,6 +56,7 @@ export const useForm = (initialForm = {}, formValidations = {}) => {
   }
 
   return {
+    formState,
     ...formState,
     handleChange,
     resetForm,

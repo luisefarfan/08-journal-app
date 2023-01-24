@@ -1,7 +1,7 @@
 import { collection, doc, setDoc } from "firebase/firestore/lite"
 import { firebaseDB } from "../../firebase/config"
 import { loadNotes } from "../../helpers/loadNotes"
-import { addNewEmptyNote, setActiveNote, savingNewNote, setNotes } from "./journalSlice"
+import { addNewEmptyNote, setActiveNote, savingNewNote, setNotes, setSaving, updateNote } from "./journalSlice"
 
 export const startNewNote = () => {
   return async (dispatch, getState) => {
@@ -37,5 +37,29 @@ export const startLoadingNotes = () => {
     const notes = await loadNotes(uid)
 
     dispatch(setNotes(notes))
+  }
+}
+
+export const startSavingNote = () => {
+  return async (dispatch, getState) => {
+    dispatch(setSaving())
+
+    const { uid } = getState().auth
+
+    const { activeNote } = getState().journal
+
+    const noteToFirestore = {
+      ...activeNote
+    }
+
+    delete noteToFirestore.id
+
+    const docRef = doc(firebaseDB, `${uid}/journal/notes/${activeNote.id}`)
+
+    // El tercer argumento es para opciones x. En este caso merge es para que actualice las propiedades a las que le cae encima
+    await setDoc(docRef, noteToFirestore, { merge: true })
+
+    dispatch(updateNote(activeNote))
+
   }
 }
