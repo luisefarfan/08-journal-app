@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Grid, Typography, Button, TextField, IconButton } from '@mui/material'
-import { SaveOutlined, UploadOutlined } from '@mui/icons-material'
+import { DeleteOutline, SaveOutlined, UploadOutlined } from '@mui/icons-material'
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.css'
 import { ImageGallery } from '../components'
@@ -9,7 +9,7 @@ import { useForm } from '../../hooks/useForm'
 import { useMemo } from 'react'
 import { useEffect } from 'react'
 import { setActiveNote } from '../../store/journal/journalSlice'
-import { startSavingNote, startUploadingFiles } from '../../store/journal/thunks'
+import { startDeletingNote, startSavingNote, startUploadingFiles } from '../../store/journal/thunks'
 import { useRef } from 'react'
 
 export const NoteView = () => {
@@ -47,6 +47,10 @@ export const NoteView = () => {
     if (target.files.length === 0) return
 
     dispatch(startUploadingFiles(target.files))
+  }
+
+  const handleNoteDelete = () => {
+    dispatch(startDeletingNote(activeNote.id))
   }
 
   return (
@@ -105,6 +109,12 @@ export const NoteView = () => {
           name='body'
           sx={{ border: 'none', mb: 1 }}
         />
+      </Grid>
+
+      <Grid container justifyContent="end">
+        <Button onClick={handleNoteDelete} sx={{ mt: 2 }} color="error">
+          <DeleteOutline />
+        </Button>
       </Grid>
 
       <ImageGallery images={activeNote.imageUrls} />

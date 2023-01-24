@@ -55,7 +55,12 @@ export const journalSlice = createSlice({
       state.isSaving = false
     },
     deleteNoteById: (state, action) => {
+      state.activeNote = null
+      state.notes = state.notes.reduce((acc, note) => {
+        if (note.id !== action.payload) acc.push(note)
 
+        return acc
+      }, [])
     },
     clearNotesOnLogout: (state) => {
       state.isSaving = false
