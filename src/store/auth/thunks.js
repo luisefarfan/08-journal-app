@@ -2,6 +2,12 @@ import { loginWithEmailAndPassword, logoutFromFirebase, registerUserWithEmailAnd
 import { clearNotesOnLogout } from "../journal/journalSlice"
 import { checkingCredentials, login, logout } from "./authSlice"
 
+export const checkingAuthentication = () => {
+  return async (dispatch) => {
+    dispatch(checkingCredentials())
+  }
+}
+
 export const googleSignIn = () => {
   return async (dispatch) => {
     dispatch(checkingCredentials())

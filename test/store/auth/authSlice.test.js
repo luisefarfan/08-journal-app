@@ -1,6 +1,6 @@
-import { authSlice, checkingCredentials, login, logout } from "../../src/store/auth/authSlice"
-import { AUTHENTICATED_STATE, CHECKING_STATE, NOT_AUTHENTICATED_STATE } from "../../src/store/auth/constants"
-import { authenticatedState, demoUser, initialState } from "../fixtures/authFixtures"
+import { authSlice, checkingCredentials, login, logout } from "../../../src/store/auth/authSlice"
+import { AUTHENTICATED_STATE, CHECKING_STATE, NOT_AUTHENTICATED_STATE } from "../../../src/store/auth/constants"
+import { authenticatedState, demoUser, initialState } from "../../fixtures/authFixtures"
 
 describe('AuthSlice tests', () => {
   it('should return the initial state and have the name auth', () => {
